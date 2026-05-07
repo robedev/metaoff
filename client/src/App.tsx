@@ -64,7 +64,7 @@ function App() {
       formData.append('file', file);
 
       try {
-        const response = await fetch('http://localhost:3001/api/upload', {
+        const response = await fetch('/api/upload', {
           method: 'POST',
           body: formData,
         });
@@ -91,7 +91,7 @@ function App() {
     setFiles(prev => prev.map(f => f.id === id ? { ...f, status: 'cleaning' } : f));
 
     try {
-      const response = await fetch(`http://localhost:3001/api/clean/${id}`, {
+      const response = await fetch(`/api/clean/${id}`, {
         method: 'POST',
       });
       const data = await response.json();
@@ -118,7 +118,7 @@ function App() {
   const handleDownload = async (id: string, originalName: string) => {
     try {
       console.log(`Iniciando descarga para ID: ${id}`);
-      const response = await fetch(`http://localhost:3001/api/download/${id}`);
+      const response = await fetch(`/api/download/${id}`);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: 'Error desconocido del servidor' }));
