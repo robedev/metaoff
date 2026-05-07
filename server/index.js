@@ -29,10 +29,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// Servir archivos estáticos del frontend
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// Manejar enrutamiento de cliente para SPA (Single Page Application)
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
 // Configuración de Multer para almacenamiento temporal
 const storage = multer.diskStorage({
